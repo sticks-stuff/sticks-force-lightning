@@ -225,9 +225,22 @@ function SWEP:Think()
 				v:TakeDamageInfo( dmg )
 	
 				local ed1 = EffectData()
+
+				-- local ViewModel = self.Owner:GetViewModel()
+				-- if not ViewModel:IsValid() then return end
+				-- PrintTable(self.Owner:GetAttachments())
+
+				-- local vm = self:GetOwner():GetViewModel()
+				-- local obj = vm:LookupAttachment( "muzzle" )
+
+				-- if (obj < 1) then
+				-- 	local muzzle = vm:GetAttachment( obj )
+				-- 	print( muzzle.Pos, muzzle.Ang )
+				-- end
+
 				ed1:SetEntity(self)
 				ed1:SetAttachment(1)
-				ed1:SetStart( vm:GetAttachment(2).Pos  )
+				ed1:SetStart( Vector(50,-50,0) )
 				ed1:SetOrigin( v:GetPos() + GetRandomPositionInBox( v:OBBMins(), v:OBBMaxs(), v:GetAngles() ) )
 				ed1:SetFlags(0x0002)
 				util.Effect( "effect_force_lightning", ed1, true, true )
@@ -235,7 +248,7 @@ function SWEP:Think()
 				-- local ed2 = EffectData()
 				-- ed2:SetEntity(self)
 				-- ed2:SetAttachment(1)
-				-- ed2:SetStart( self.Owner:GetPos() + Vector(50,-50,0) )
+				-- ed2:SetStart( self.Owner:GetPos() )
 				-- ed2:SetOrigin( v:GetPos() + GetRandomPositionInBox( v:OBBMins(), v:OBBMaxs(), v:GetAngles() ) )
 				-- ed2:SetFlags(0x0002)
 				-- util.Effect( "effect_force_lightning", ed2, true, true )	
@@ -335,7 +348,9 @@ function SWEP:Think()
 		if self.Owner:KeyDown(IN_ATTACK) then
 			if ( CurTime() < self:GetNextPrimaryFire() ) then return end
 			local targ,tab = self:SelectTargets(1,dist)
-			vm:SendViewModelMatchingSequence( vm:LookupSequence( "lighting_start" ) )
+			if(vm:GetSequence() != vm:LookupSequence( "lighting_loop" )) then
+				vm:SendViewModelMatchingSequence( vm:LookupSequence( "lighting_loop" ) )
+			end
 			-- print(heldTime)
 			if table.IsEmpty(tab) or table.GetFirstValue(tab).dot < 0.8 then
 				-- print("cring")
@@ -384,6 +399,9 @@ function SWEP:Think()
 			end
 		end
 		if self.Owner:KeyReleased(IN_ATTACK) then
+			if(vm:GetSequence() == vm:LookupSequence( "lighting_loop" ) || vm:LookupSequence( "lighting_start" )) then
+				vm:SendViewModelMatchingSequence( vm:LookupSequence( "lighting_end" ) )
+			end
 			if heldTime > 30 then
 				self:StopSound("lighting_loop_first")
 			end
