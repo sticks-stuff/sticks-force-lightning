@@ -243,7 +243,7 @@ hook.Add( "PostDrawTranslucentRenderables", "ARCBlastRender", function()
 			dlight.Size = 256
 			dlight.DieTime = CurTime() + 0.4
 			if id == 1 then				
-				seg[1] = GetTracerOrigin((seg[3].Owner:GetPos()) + Vector(0,0,30), 0x0002, seg[3], 1)
+				-- seg[1] = GetTracerOrigin((seg[3].Owner:GetPos()) + Vector(0,0,30), 0x0002, seg[3], 1)
 			end
 			render.DrawBeam( seg[1], seg[2], ( math.max( t.startpos:Distance( t.endpos ) - seg[1]:Distance( t.endpos ), 20) / ( t.startpos:Distance( t.endpos ) ) * t.w ) * ( (t.time - CurTime() ) / tiem ), 0, seg[1]:Distance( seg[2] ) / 25, Color( 0, 0, 255 ) )
 		end

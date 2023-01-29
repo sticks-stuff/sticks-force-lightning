@@ -228,9 +228,9 @@ function SWEP:Think()
 
 				-- local ViewModel = self.Owner:GetViewModel()
 				-- if not ViewModel:IsValid() then return end
-				-- PrintTable(self.Owner:GetAttachments())
+				-- PrintTable(ViewModel:GetAttachments())
 
-				-- local vm = self:GetOwner():GetViewModel()
+				local vm = self:GetOwner():GetViewModel()
 				-- local obj = vm:LookupAttachment( "muzzle" )
 
 				-- if (obj < 1) then
@@ -238,20 +238,27 @@ function SWEP:Think()
 				-- 	print( muzzle.Pos, muzzle.Ang )
 				-- end
 
-				-- ed1:SetEntity(self)
-				-- ed1:SetAttachment(1)
-				-- ed1:SetStart( Vector(50,-50,0) )
-				-- ed1:SetOrigin( v:GetPos() + GetRandomPositionInBox( v:OBBMins(), v:OBBMaxs(), v:GetAngles() ) )
-				-- ed1:SetFlags(0x0002)
-				-- util.Effect( "effect_force_lightning", ed1, true, true )
+				ed1:SetEntity(self)
+				ed1:SetAttachment(2)
+				-- ed1:SetStart( ViewModel:GetAttachment(2).Pos )
+				ed1:SetOrigin( v:GetPos() + GetRandomPositionInBox( v:OBBMins(), v:OBBMaxs(), v:GetAngles() ) )
+				ed1:SetFlags(0x0002)
+				util.Effect( "effect_force_lightning", ed1, true, true )
 
 				local ed2 = EffectData()
 				ed2:SetEntity(self)
 				ed2:SetAttachment(1)
-				ed2:SetStart( self.Owner:GetPos() )
+				-- ed2:SetStart( self.Owner:GetPos() )
 				ed2:SetOrigin( v:GetPos() + GetRandomPositionInBox( v:OBBMins(), v:OBBMaxs(), v:GetAngles() ) )
 				ed2:SetFlags(0x0002)
 				util.Effect( "effect_force_lightning", ed2, true, true )	
+
+				-- local vPoint = Vector( 0, 0, 0 )
+				-- local effectdata = EffectData()
+				-- effectdata:SetOrigin( vPoint )
+				-- -- effectdata:SetAttachment(2)
+				-- effectdata:SetStart( self.Owner:GetPos() )
+				-- util.Effect( "effect_force_lightning", effectdata )
 
 
 				local timeLeft = nextOccurance - CurTime()
